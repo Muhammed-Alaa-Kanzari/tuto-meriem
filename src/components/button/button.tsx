@@ -1,3 +1,4 @@
+'use client'
 import { Button as ChakraButton } from '@chakra-ui/react'
 import { MouseEventHandler, ReactNode } from 'react'
 

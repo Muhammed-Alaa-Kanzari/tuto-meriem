@@ -1,4 +1,6 @@
+'use client'
 import {
+    ChakraComponent,
     FormControl,
     FormHelperText,
     FormLabel,
@@ -14,20 +16,21 @@ export type InputFieldProps = {
     error?: FieldError
 } & Partial<ReturnType<UseFormRegister<Record<string, unknown>>>>
 
-export const InputField = forwardRef((props: InputFieldProps, ref) => {
+type DivComponent = ChakraComponent<'div'>
+export const InputField = ((props: InputFieldProps) => {
     const { type = 'text', label, error, ...inputProps } = props
 
     return (
         <FormControl>
             {label && <FormLabel>{label}</FormLabel>}
             {type === 'textarea' ? (
-                <Textarea bg="white" rows={8} {...inputProps} ref={ref} />
+                <Textarea bg="white" rows={8} {...inputProps} />
             ) : (
-                <Input bg="white" type={type} {...inputProps} ref={ref} />
+                <Input bg="white" type={type} {...inputProps} />
             )}
             {error && (
                 <FormHelperText color="red">{error.message}</FormHelperText>
             )}
         </FormControl>
     )
-})
+}) as DivComponent
