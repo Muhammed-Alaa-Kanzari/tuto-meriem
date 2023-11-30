@@ -35,7 +35,7 @@ function PublicJobPageClient() {
         <>
             <Seo title={`${job.position} | ${job.location}`} />
             <Stack w="full">
-                <PublicJobInfo job={job} />
+                <PublicJobInfo job={job[0]} />
                 <Button
                     bg="primary"
                     color="primaryAccent"
