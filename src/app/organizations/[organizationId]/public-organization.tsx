@@ -5,23 +5,26 @@ import { Seo } from '@/components/seo'
 import { JobsList } from '@/features/jobs'
 import { OrganizationInfo } from '@/features/organizations'
 import { useQuery } from '@tanstack/react-query'
-import { getJobsData, getOrganizationData } from './fetch-data'
 
 const PublicOrganization = () => {
     const { data: organization } = useQuery({
         queryKey: ['organization'],
-        queryFn: () => getOrganizationData(),
+        queryFn: () =>
+            fetch('http://localhost:5000/organizations').then((res) =>
+                res.json()
+            ),
     })
     const { data: jobs } = useQuery({
         queryKey: ['jobs'],
-        queryFn: () => getJobsData(),
+        queryFn: () =>
+            fetch('http://localhost:5000/jobs').then((res) => res.json()),
     })
 
     if (!organization) return <NotFound />
 
     return (
         <>
-            <Seo title={organization.name} />
+            <Seo title={organization[0].name} />
             <Stack
                 spacing="4"
                 w="full"
@@ -30,13 +33,13 @@ const PublicOrganization = () => {
                 mt="12"
                 p="4"
             >
-                <OrganizationInfo organization={organization} />
+                <OrganizationInfo organization={organization[0]} />
                 <Heading size="md" my="6">
                     Open Jobs
                 </Heading>
                 <JobsList
                     jobs={jobs}
-                    organizationId={organization.id}
+                    organizationId={organization[0].id}
                     type="public"
                 />
             </Stack>

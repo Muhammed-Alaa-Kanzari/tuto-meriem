@@ -24,7 +24,7 @@ export const PublicJobInfo = ({ job }: { job: Job }) => {
                     View More Jobs
                 </Link>
             </VStack>
-            <Content>{job.info}</Content>
+            <Content>{job?.info}</Content>
         </>
     )
 }
