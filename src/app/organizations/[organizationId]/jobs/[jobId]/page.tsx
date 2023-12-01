@@ -3,23 +3,33 @@ import {
     QueryClient,
     dehydrate,
 } from '@tanstack/react-query'
-import PublicJobPageClient from './client-component'
-import { getJobsData, getOrganizationData } from '../../fetch-data'
+import PublicJobPageClient from './public-jobs'
 
-export const PublicJobPage = async () => {
+export const PublicJobPage = async ({
+    params,
+}: {
+    params: { jobId: string }
+}) => {
+    const { jobId } = params
     const queryClient = new QueryClient()
     queryClient.prefetchQuery({
         queryKey: ['organization'],
-        queryFn: () => getOrganizationData(),
+        queryFn: () =>
+            fetch('http://localhost:5000/organizations').then((res) =>
+                res.json()
+            ),
     })
     queryClient.prefetchQuery({
         queryKey: ['job'],
-        queryFn: () => getJobsData(),
+        queryFn: () =>
+            fetch('http://localhost:5000/jobs').then((res) => res.json()),
     })
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <PublicJobPageClient />
+            <div>
+                <PublicJobPageClient jobId={jobId} />
+            </div>
         </HydrationBoundary>
     )
 }

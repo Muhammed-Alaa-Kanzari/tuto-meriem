@@ -3,26 +3,31 @@ import { Stack, Button } from '@chakra-ui/react'
 import { NotFound } from '@/components/not-found'
 import { Seo } from '@/components/seo'
 import { PublicJobInfo } from '@/features/jobs'
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { getJobsData, getOrganizationData } from '../../fetch-data'
+import { useJob } from '@/testing/test-data'
 
-function PublicJobPageClient() {
+function PublicJobPageClient({ jobId }: { jobId: string }) {
     const { data: organization } = useQuery({
         queryKey: ['organization'],
-        queryFn: () => getOrganizationData(),
+        queryFn: () =>
+            fetch('http://localhost:5000/organizations').then((res) =>
+                res.json()
+            ),
+        refetchOnWindowFocus: false,
     })
-    const { data: job } = useQuery({
+    const { data: job = useJob(jobId) } = useQuery({
         queryKey: ['job'],
-        queryFn: () => getJobsData(),
+        queryFn: () =>
+            fetch('http://localhost:5000/jobs').then((res) => res.json()),
     })
 
-    const [isClient, setIsClient] = useState(false)
+    // const [isClient, setIsClient] = useState(false)
 
-    useEffect(() => {
-        setIsClient(true)
-        console.log(isClient)
-    }, [])
+    // useEffect(() => {
+    //     setIsClient(true)
+    //     console.log(isClient)
+    // }, [])
 
     const isInvalid =
         !job || !organization || organization.id !== job.organizationId
@@ -35,7 +40,7 @@ function PublicJobPageClient() {
         <>
             <Seo title={`${job.position} | ${job.location}`} />
             <Stack w="full">
-                <PublicJobInfo job={job} />
+                <PublicJobInfo job={job.jobId} />
                 <Button
                     bg="primary"
                     color="primaryAccent"
