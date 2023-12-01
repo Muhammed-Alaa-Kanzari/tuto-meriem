@@ -5,7 +5,6 @@ import { Seo } from '@/components/seo'
 import { JobsList } from '@/features/jobs'
 import { OrganizationInfo } from '@/features/organizations'
 import { useQuery } from '@tanstack/react-query'
-import { getJobsData, getOrganizationData } from './fetch-data'
 
 const PublicOrganization = () => {
     const { data: organization } = useQuery({
@@ -17,7 +16,8 @@ const PublicOrganization = () => {
     })
     const { data: jobs } = useQuery({
         queryKey: ['jobs'],
-        queryFn: () => getJobsData(),
+        queryFn: () =>
+            fetch('http://localhost:5000/jobs').then((res) => res.json()),
     })
 
     if (!organization) return <NotFound />

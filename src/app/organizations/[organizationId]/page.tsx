@@ -5,7 +5,10 @@ import {
     dehydrate,
 } from '@tanstack/react-query'
 import PublicOrganization from './public-organization'
-import { getJobsData, getOrganizationData } from './fetch-data'
+import {
+    getJobsData,
+    getOrganizationData,
+} from '../../../components/fetch-data'
 
 function PublicOrganizationPage() {
     const queryClient = new QueryClient()
